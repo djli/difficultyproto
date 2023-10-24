@@ -18,10 +18,13 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         // Movement
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
-        Vector3 movement = new Vector3(horizontal, vertical, 0);
-        transform.Translate(movement * speed * Time.deltaTime);
+        Vector3 movement = Vector3.zero;
+        if (Input.GetKey(KeyCode.W)) movement += Vector3.up;
+        if (Input.GetKey(KeyCode.S)) movement += Vector3.down;
+        if (Input.GetKey(KeyCode.A)) movement += Vector3.left;
+        if (Input.GetKey(KeyCode.D)) movement += Vector3.right;
+
+        transform.Translate(movement.normalized * speed * Time.deltaTime);
 
         // Change color
         if (Input.GetKeyDown(KeyCode.Space))
