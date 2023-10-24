@@ -27,4 +27,9 @@ public class enemyMovement : MonoBehaviour
     {
         mDirection = direction;
     }
+
+    private void OnBecameInvisible()
+    {
+        Destroy(gameObject);
+    }
 }

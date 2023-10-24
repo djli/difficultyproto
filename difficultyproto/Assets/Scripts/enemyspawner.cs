@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class enemyspawner : MonoBehaviour
 {
     const float LEFT_SPAWN = -10f;
@@ -13,6 +13,7 @@ public class enemyspawner : MonoBehaviour
     const float INCREMENTTIMER = 3f;
 
     int spawnRateMulti = 0;
+    public int scoreCount = 0;
 
     float vertSpeedMulti = 1f;
     float horiSpeedMulti = 1.8f;
@@ -39,6 +40,13 @@ public class enemyspawner : MonoBehaviour
         incTimer += Time.deltaTime;
         spawnTimer += Time.deltaTime;
 
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            // Call the RestartGame method.
+            RestartGame();
+        }
+
+
         if (incTimer > INCREMENTTIMER)
         {
             incTimer = 0f;
@@ -51,6 +59,7 @@ public class enemyspawner : MonoBehaviour
         if (spawnTimer > SPAWNRATE - 0.2 * spawnRateMulti)
         {
             spawnTimer = 0f;
+            scoreCount++;
             switch (Random.Range(0, 4))
             {
                 case 0: //top spawn
@@ -133,8 +142,8 @@ public class enemyspawner : MonoBehaviour
         }
     }
 
-    private void OnBecameInvisible()
+    public void RestartGame()
     {
-        Destroy(gameObject);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
