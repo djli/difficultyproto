@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private float speed = 10.0f;
+    private float speed = 5.0f;
     private bool isBlack = true;
     private SpriteRenderer spriteRenderer;
 

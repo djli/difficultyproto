@@ -11,6 +11,7 @@ public class enemyspawner : MonoBehaviour
     const float BOT_SPAWN = -5f;
     const float SPAWNRATE = 3f;
     const float INCREMENTTIMER = 3f;
+    const int SPAWN_MULTI_CAP = 5;
 
     int spawnRateMulti = 0;
     public int scoreCount = 0;
@@ -26,8 +27,13 @@ public class enemyspawner : MonoBehaviour
     float spawnTimer = 0f;
     float incTimer = 0f;
 
+    private int prevWave = 0;
+    private int nextWave = 0;
+
     public GameObject enemyDark;
     public GameObject enemyLight;
+    public GameObject bulletDark;
+    public GameObject bulletLight;
     // Start is called before the first frame update
     void Start()
     {
@@ -50,7 +56,7 @@ public class enemyspawner : MonoBehaviour
         if (incTimer > INCREMENTTIMER)
         {
             incTimer = 0f;
-            if (spawnRateMulti < 10)
+            if (spawnRateMulti < SPAWN_MULTI_CAP)
             {
                 spawnRateMulti++;
             }
@@ -60,7 +66,8 @@ public class enemyspawner : MonoBehaviour
         {
             spawnTimer = 0f;
             scoreCount++;
-            switch (Random.Range(0, 4))
+            prevWave = Random.Range(0, 4);
+            switch (prevWave)
             {
                 case 0: //top spawn
                     for (int i = 0; i <= 20; i++)
@@ -138,6 +145,93 @@ public class enemyspawner : MonoBehaviour
                         }
                     }
                     break;
+            }
+            if (spawnRateMulti == SPAWN_MULTI_CAP)
+            {
+                nextWave = Random.Range(0, 4);
+                while (nextWave == prevWave)
+                {
+                    nextWave = Random.Range(0, 4);
+                }
+                switch (nextWave)
+                {
+                    case 0: //top spawn
+                        for (int i = 0; i <= 20; i++)
+                        {
+                            if (Random.Range(0, 2) == 0)
+                            {
+                                Vector2 pos = new Vector2(LEFT_SPAWN + i, TOP_SPAWN);
+                                GameObject enemyIns = Instantiate(enemyDark, pos, Quaternion.identity);
+                                enemyIns.GetComponent<enemyMovement>().setDirection(upDown);
+                                enemyIns.GetComponent<enemyMovement>().setSpeed(vertSpeedMulti + 0.1f * spawnRateMulti);
+                            }
+                            else
+                            {
+                                Vector2 pos = new Vector2(LEFT_SPAWN + i, TOP_SPAWN);
+                                GameObject enemyIns = Instantiate(enemyLight, pos, Quaternion.identity);
+                                enemyIns.GetComponent<enemyMovement>().setDirection(upDown);
+                                enemyIns.GetComponent<enemyMovement>().setSpeed(vertSpeedMulti + 0.1f * spawnRateMulti);
+                            }
+                        }
+                        break;
+                    case 1: //bottom spawn
+                        for (int i = 0; i <= 20; i++)
+                        {
+                            if (Random.Range(0, 2) == 0)
+                            {
+                                Vector2 pos = new Vector2(LEFT_SPAWN + i, BOT_SPAWN);
+                                GameObject enemyIns = Instantiate(enemyDark, pos, Quaternion.identity);
+                                enemyIns.GetComponent<enemyMovement>().setDirection(downUp);
+                                enemyIns.GetComponent<enemyMovement>().setSpeed(vertSpeedMulti + 0.1f * spawnRateMulti);
+                            }
+                            else
+                            {
+                                Vector2 pos = new Vector2(LEFT_SPAWN + i, BOT_SPAWN);
+                                GameObject enemyIns = Instantiate(enemyLight, pos, Quaternion.identity);
+                                enemyIns.GetComponent<enemyMovement>().setDirection(downUp);
+                                enemyIns.GetComponent<enemyMovement>().setSpeed(vertSpeedMulti + 0.1f * spawnRateMulti);
+                            }
+                        }
+                        break;
+                    case 2: //left spawn
+                        for (int i = 0; i <= 10; i++)
+                        {
+                            if (Random.Range(0, 2) == 0)
+                            {
+                                Vector2 pos = new Vector2(LEFT_SPAWN, BOT_SPAWN + i);
+                                GameObject enemyIns = Instantiate(enemyDark, pos, Quaternion.identity);
+                                enemyIns.GetComponent<enemyMovement>().setDirection(leftRight);
+                                enemyIns.GetComponent<enemyMovement>().setSpeed(horiSpeedMulti + 0.18f * spawnRateMulti);
+                            }
+                            else
+                            {
+                                Vector2 pos = new Vector2(LEFT_SPAWN, BOT_SPAWN + i);
+                                GameObject enemyIns = Instantiate(enemyLight, pos, Quaternion.identity);
+                                enemyIns.GetComponent<enemyMovement>().setDirection(leftRight);
+                                enemyIns.GetComponent<enemyMovement>().setSpeed(horiSpeedMulti + 0.18f * spawnRateMulti);
+                            }
+                        }
+                        break;
+                    case 3: //right spawn
+                        for (int i = 0; i <= 10; i++)
+                        {
+                            if (Random.Range(0, 2) == 0)
+                            {
+                                Vector2 pos = new Vector2(RIGHT_SPAWN, BOT_SPAWN + i);
+                                GameObject enemyIns = Instantiate(enemyDark, pos, Quaternion.identity);
+                                enemyIns.GetComponent<enemyMovement>().setDirection(rightLeft);
+                                enemyIns.GetComponent<enemyMovement>().setSpeed(horiSpeedMulti + 0.18f * spawnRateMulti);
+                            }
+                            else
+                            {
+                                Vector2 pos = new Vector2(RIGHT_SPAWN, BOT_SPAWN + i);
+                                GameObject enemyIns = Instantiate(enemyLight, pos, Quaternion.identity);
+                                enemyIns.GetComponent<enemyMovement>().setDirection(rightLeft);
+                                enemyIns.GetComponent<enemyMovement>().setSpeed(horiSpeedMulti + 0.18f * spawnRateMulti);
+                            }
+                        }
+                        break;
+                }
             }
         }
     }
