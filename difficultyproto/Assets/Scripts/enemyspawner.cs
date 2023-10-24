@@ -36,6 +36,8 @@ public class enemyspawner : MonoBehaviour
     public GameObject enemyLight;
     public GameObject bulletDark;
     public GameObject bulletLight;
+
+    public GameManager gameManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -47,12 +49,6 @@ public class enemyspawner : MonoBehaviour
     {
         incTimer += Time.deltaTime;
         spawnTimer += Time.deltaTime;
-
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            // Call the RestartGame method.
-            RestartGame();
-        }
 
 
         if (incTimer > INCREMENTTIMER)
@@ -68,6 +64,7 @@ public class enemyspawner : MonoBehaviour
         {
             spawnTimer = 0f;
             scoreCount++;
+            gameManager.AddScore();
             prevWave = Random.Range(0, 4);
             switch (prevWave)
             {
@@ -269,10 +266,5 @@ public class enemyspawner : MonoBehaviour
                 }
             }
         }
-    }
-
-    public void RestartGame()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
