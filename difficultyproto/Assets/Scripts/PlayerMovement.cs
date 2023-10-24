@@ -54,5 +54,13 @@ public class PlayerMovement : MonoBehaviour
             // Handle collision with white bullet when player is black
             Destroy(gameObject);
         }
+        else if (other.tag == "Black" && isBlack)
+        {
+            Destroy(other.gameObject);
+        }
+        else if (other.tag == "White" && !isBlack)
+        {
+            Destroy(other.gameObject);
+        }
     }
 }
