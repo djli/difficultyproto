@@ -12,6 +12,7 @@ public class enemyspawner : MonoBehaviour
     const float SPAWNRATE = 3f;
     const float INCREMENTTIMER = 3f;
     const int SPAWN_MULTI_CAP = 5;
+    const float HOMING_SPAWN = 5f;
 
     int spawnRateMulti = 0;
     public int scoreCount = 0;
@@ -26,6 +27,7 @@ public class enemyspawner : MonoBehaviour
 
     float spawnTimer = 0f;
     float incTimer = 0f;
+    float homingTimer = 0f;
 
     private int prevWave = 0;
     private int nextWave = 0;
@@ -231,6 +233,39 @@ public class enemyspawner : MonoBehaviour
                             }
                         }
                         break;
+                }
+            }
+        }
+
+        if (spawnRateMulti == SPAWN_MULTI_CAP)
+        {
+            homingTimer += Time.deltaTime;
+            if (homingTimer > HOMING_SPAWN)
+            {
+                homingTimer = 0f;
+                Vector2 pos = Vector2.zero;
+                switch (Random.Range(0, 4))
+                {
+                    case 0: //top left
+                        pos = new Vector2(LEFT_SPAWN, TOP_SPAWN);
+                        break;
+                    case 1: //top right
+                        pos = new Vector2(RIGHT_SPAWN, TOP_SPAWN);
+                        break;
+                    case 2: //bottom left
+                        pos = new Vector2(LEFT_SPAWN, BOT_SPAWN);
+                        break;
+                    case 3: //bottom right
+                        pos = new Vector2(RIGHT_SPAWN, BOT_SPAWN);
+                        break;
+                }
+                if (Random.Range(0, 2) == 0)
+                {
+                    Instantiate(bulletDark, pos, Quaternion.identity);
+                }
+                else
+                {
+                    Instantiate(bulletLight, pos, Quaternion.identity);
                 }
             }
         }
