@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -12,9 +13,11 @@ public class enemyspawner : MonoBehaviour
     const float SPAWNRATE = 3f;
     const float INCREMENTTIMER = 3f;
     const int SPAWN_MULTI_CAP = 5;
+    const int HOMING_SPAWN_CAP = 5;
     const float HOMING_SPAWN = 5f;
 
     int spawnRateMulti = 0;
+    int homingSpawnMulti = 0;
     public int scoreCount = 0;
 
     float vertSpeedMulti = 1f;
@@ -237,9 +240,13 @@ public class enemyspawner : MonoBehaviour
         if (spawnRateMulti == SPAWN_MULTI_CAP)
         {
             homingTimer += Time.deltaTime;
-            if (homingTimer > HOMING_SPAWN)
+            if (homingTimer > HOMING_SPAWN - homingSpawnMulti * 0.5f)
             {
                 homingTimer = 0f;
+                if (homingSpawnMulti < HOMING_SPAWN_CAP)
+                {
+                    homingSpawnMulti++;
+                }
                 Vector2 pos = Vector2.zero;
                 switch (Random.Range(0, 4))
                 {

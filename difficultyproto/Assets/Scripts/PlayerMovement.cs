@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private float speed = 5.0f;
+    private float speed = 7.0f;
     private bool isBlack = true;
     private SpriteRenderer spriteRenderer;
     public GameManager gameManager;
@@ -21,10 +21,10 @@ public class PlayerMovement : MonoBehaviour
     {
         // Movement
         Vector3 movement = Vector3.zero;
-        if (Input.GetKey(KeyCode.W)) movement += Vector3.up;
-        if (Input.GetKey(KeyCode.S)) movement += Vector3.down;
-        if (Input.GetKey(KeyCode.A)) movement += Vector3.left;
-        if (Input.GetKey(KeyCode.D)) movement += Vector3.right;
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) movement += Vector3.up;
+        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) movement += Vector3.down;
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) movement += Vector3.left;
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) movement += Vector3.right;
 
         transform.Translate(movement.normalized * speed * Time.deltaTime);
 
