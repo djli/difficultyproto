@@ -8,6 +8,8 @@ public class PlayerMovement : MonoBehaviour
     private float speed = 5.0f;
     private bool isBlack = true;
     private SpriteRenderer spriteRenderer;
+    public GameManager gameManager;
+    public Camera mainCamera;
 
     void Start()
     {
@@ -51,12 +53,14 @@ public class PlayerMovement : MonoBehaviour
         if (other.tag == "Black" && !isBlack)
         {
             // Handle collision with black bullet when player is white
-            Destroy(gameObject);
+            gameManager.PlayDeathSound();
+            StartCoroutine(PlayerDeathSequence());
         }
         else if (other.tag == "White" && isBlack)
         {
             // Handle collision with white bullet when player is black
-            Destroy(gameObject);
+            gameManager.PlayDeathSound();
+            StartCoroutine(PlayerDeathSequence());
         }
         else if (other.tag == "Black" && isBlack)
         {
@@ -66,5 +70,34 @@ public class PlayerMovement : MonoBehaviour
         {
             Destroy(other.gameObject);
         }
+    }
+
+    IEnumerator PlayerDeathSequence()
+    {
+        // Slow down time
+        Time.timeScale = 0.5f;
+
+        // Screen shake
+        Vector3 originalCamPos = mainCamera.transform.localPosition;
+        float elapsed = 0.0f;
+        float duration = 0.5f; // Duration of the shake in seconds
+
+        while (elapsed < duration)
+        {
+            float x = Random.Range(-0.1f, 0.1f);
+            float y = Random.Range(-0.1f, 0.1f);
+            mainCamera.transform.localPosition = originalCamPos + new Vector3(x, y, 0);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        // Reset camera position
+        mainCamera.transform.localPosition = originalCamPos;
+
+        // Destroy the player GameObject
+        Destroy(gameObject);
+
+        gameManager.RestartGame();
+
     }
 }

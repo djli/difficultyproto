@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
     private int score;
     public TMP_Text scoreText;
     public TMP_Text highScoreText;
+    public AudioSource backgroundMusic;
+    public AudioSource deathSound;
 
     private void Awake()
     {
@@ -19,6 +21,7 @@ public class GameManager : MonoBehaviour
     {
         ResetScore();
         UpdateUI();
+        backgroundMusic.Play();
     }
 
     private void Update()
@@ -74,8 +77,14 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
+        Time.timeScale = 1f;
         SaveHighScore();
         ResetScore();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void PlayDeathSound()
+    {
+        deathSound.Play();
     }
 }
